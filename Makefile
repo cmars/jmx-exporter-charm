@@ -16,7 +16,7 @@ charm/builds/jmx-exporter:
 snap: jmx-exporter_$(JMX_EXPORTER_VERSION)_amd64.snap
 
 jmx-exporter_$(JMX_EXPORTER_VERSION)_amd64.snap:
-	SNAPCRAFT_BUILD_ENVIRONMENT_MEMORY=6G snapcraft
+	snapcraft --use-lxd
 
 .PHONY: clean
 clean: clean-charm clean-snap
