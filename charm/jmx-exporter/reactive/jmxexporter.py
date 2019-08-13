@@ -1,6 +1,5 @@
 from charms.reactive import (when, when_any, when_not, when_none,
                              set_flag, clear_flag, hook)
-from charms.reactive.helpers import data_changed
 
 from charmhelpers.core import hookenv
 
@@ -8,13 +7,22 @@ from charms.layer.jmxexporter import JMXExporter
 
 
 def refresh():
-    hookenv.status_set('maintenance', 'refreshing service')
+    jmx = JMXExporter()
+
     clear_flag('jmxexporter.service-installed')
 
-    jmx = JMXExporter()
+    if not hookenv.config()['config']:
+        hookenv.status_set('waiting', 'waiting for config')
+
+        if jmx.is_running():
+            jmx.stop()
+
+        return
+
+    hookenv.status_set('maintenance', 'refreshing service')
     jmx.install()
     jmx.restart()
-
+    hookenv.status_set('active', 'running')
     set_flag('jmxexporter.service-installed')
 
 
@@ -25,9 +33,6 @@ def waiting():
 
 @hook('config-changed')
 def config_changed():
-    if not data_changed('jmx_exporter.config', hookenv.config()['config']):
-        return
-
     refresh()
 
 
