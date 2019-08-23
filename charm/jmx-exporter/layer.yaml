@@ -8,6 +8,7 @@ options:
   basic:
     packages:
       - default-jre-headless
+    include_system_packages: True
   snap:
     jmx-exporter:
       channel: edge
