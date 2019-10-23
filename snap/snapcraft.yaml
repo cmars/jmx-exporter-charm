@@ -1,6 +1,6 @@
 name: jmx-exporter
 base: core18
-version: '0.11'
+version: '0.12'
 summary: Exposes JMX Beans via HTTP for Prometheus consumption
 description: |
   Exposes JMX Beans via HTTP for Prometheus consumption
@@ -17,10 +17,10 @@ apps:
 parts:
   build:
     stage-packages:
-      - openjdk-8-jre
+      - default-jre-headless
     plugin: maven
     source: https://github.com/prometheus/jmx_exporter.git
-    source-tag: parent-0.11.0
+    source-tag: parent-0.12.0
     source-type: git
     maven-options:
       - -DskipTests=true
